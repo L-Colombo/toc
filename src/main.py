@@ -9,9 +9,9 @@ from lib.utils import dump_toc, open_pdf, pprint_toc
 
 
 @click.group()
-def cli():
+def main():
     """
-    The main entrypoint
+    toc - a CLI utility to edit the table of contents of your PDFs
     """
     pass
 
@@ -77,9 +77,9 @@ def meta():
     pass
 
 
-cli.add_command(gen)
-cli.add_command(io)
-cli.add_command(meta)
+main.add_command(gen)
+main.add_command(io)
+main.add_command(meta)
 
 if __name__ == "__main__":
-    cli()
+    main()
