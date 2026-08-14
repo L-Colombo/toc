@@ -5,8 +5,8 @@ from itertools import chain
 from re import Pattern
 from typing import Dict, Iterator, List, Optional
 
-from fitz import Document
-from fitzutils import ToCEntry
+from pymupdf import Document
+from .utils import ToCEntry
 
 
 DEF_TOLERANCE: float = 1e-5
