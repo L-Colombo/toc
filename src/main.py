@@ -5,11 +5,11 @@ from typing import TextIO
 import click
 import toml
 
-from lib.generate import gen_toc
-from lib.io import read_toc, write_toc
-from lib.meta import dump_toml, extract_meta, print_meta
-from lib.parser import parse_toc
-from lib.utils import dump_toc, open_pdf, pprint_toc
+from tocgen.generate import gen_toc
+from tocgen.io import read_toc, write_toc
+from tocgen.meta import dump_toml, extract_meta, print_meta
+from tocgen.parser import parse_toc
+from tocgen.utils import dump_toc, open_pdf, pprint_toc
 
 
 @click.group()
