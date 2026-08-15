@@ -7,6 +7,7 @@ import toml
 
 from lib.generate import gen_toc
 from lib.io import read_toc, write_toc
+from lib.meta import dump_toml, extract_meta, print_meta
 from lib.parser import parse_toc
 from lib.utils import dump_toc, open_pdf, pprint_toc
 
@@ -140,11 +141,32 @@ def io(path_in, toc_file, out, readable, print_toc, debug, vpos):
 
 
 @click.command()
-def meta():
+@click.argument("path_in", required=True)
+@click.argument("page", required=True)
+@click.argument("pattern", required=True)
+@click.option("--ignore-case", "ignore_case", is_flag=True, flag_value=False)
+@click.option("--auto-level", "auto_level", type=int, default=None)
+def meta(path_in, page, pattern, ignore_case, auto_level):
     """
     Extract metadata from a PDF and write them to a recipe.toml file
     """
-    pass
+
+    out: TextIO = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="ignore")
+
+    with open_pdf(path_in) as doc:
+        meta = extract_meta(doc, pattern, page, ignore_case)
+
+        # nothing found
+        if len(meta) == 0:
+            sys.exit(1)
+
+        # should we add \n between each output?
+        addnl = not out.isatty()
+
+        if auto_level:
+            print("\n".join([dump_toml(m, auto_level, addnl) for m in meta]), file=out)
+        else:
+            print("\n".join(map(print_meta, meta)), file=out)
 
 
 main.add_command(gen)
