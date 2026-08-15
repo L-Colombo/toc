@@ -1,3 +1,4 @@
+import os
 import sys
 from typing import TextIO
 
@@ -5,6 +6,8 @@ import click
 import toml
 
 from lib.generate import gen_toc
+from lib.io import read_toc, write_toc
+from lib.parser import parse_toc
 from lib.utils import dump_toc, open_pdf, pprint_toc
 
 
@@ -72,17 +75,74 @@ def gen(
 
 
 @click.command()
-def io():
+@click.argument("path_in", required=True)
+@click.argument("toc_file", required=True)
+@click.argument("out", required=True)
+@click.option("--readable", "readable", is_flag=True, flag_value=False)
+@click.option("--print-toc", "print_toc", is_flag=True, flag_value=False)
+@click.option("--debug", "debug", is_flag=True, flag_value=False)
+@click.option("--vpos", "vpos", is_flag=True, flag_value=False)
+@click.option()
+def io(path_in, toc_file, out, readable, print_toc, debug, vpos):
     """
     Read the data.toc file and write table of contents to a pdf
     """
-    pass
+    try:
+        with open_pdf(path_in) as doc:
+            if toc_file.isatty() or print_toc:
+                # no input from user, switch to output mode and extract the toc
+                # of pdf
+                toc = read_toc(doc)
+                if len(toc) == 0:
+                    print("error: no table of contents found", file=sys.stderr)
+                    sys.exit(1)
+
+                stdout = io.TextIOWrapper(
+                    sys.stdout.buffer, encoding="utf-8", errors="ignore"
+                )
+
+                if readable:
+                    print(pprint_toc(toc), file=stdout)
+                else:
+                    print(dump_toc(toc, vpos), end="", file=stdout)
+                sys.exit(0)
+
+            # an input is given, so switch to input mode
+            toc = parse_toc(toc_file)
+            write_toc(doc, toc)
+
+            if out is None:
+                # add suffix to input name as output
+                pfx, ext = os.path.splitext(path_in)
+                out = f"{pfx}_out{ext}"
+            doc.save(out)
+    except ValueError as e:
+        if debug:
+            raise e
+        print("error:", e, file=sys.stderr)
+        sys.exit(1)
+    except IOError as e:
+        if debug:
+            raise e
+        print("error: unable to open file", file=sys.stderr)
+        print(e, file=sys.stderr)
+        sys.exit(1)
+    except IndexError as e:
+        if debug:
+            raise e
+        print("index error:", e, file=sys.stderr)
+        sys.exit(1)
+    except KeyboardInterrupt as e:
+        if debug:
+            raise e
+        print("error: interrupted", file=sys.stderr)
+        sys.exit(1)
 
 
 @click.command()
 def meta():
     """
-    Extract pdf metadata to a recipe.toml
+    Extract metadata from a PDF and write them to a recipe.toml file
     """
     pass
 
