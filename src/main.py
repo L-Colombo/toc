@@ -21,8 +21,8 @@ def main():
 
 
 @click.command()
-@click.argument("path in", required=True)
-@click.argument("recipe file", required=True)
+@click.argument("path-in", required=True)
+@click.argument("recipe-file", required=True)
 @click.option("--readable", "readable", is_flag=True, flag_value=False)
 @click.option("--debug", "debug", is_flag=True, flag_value=False)
 @click.option("--vpos", "vpos", is_flag=True, flag_value=False)
@@ -37,17 +37,15 @@ def gen(
     Generate a data.toc file from recipe.toml
     """
 
-    out: TextIO = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="ignore")
-
     try:
         with open_pdf(path_in) as doc:
             recipe = toml.load(recipe_file)
             toc = gen_toc(doc, recipe)
 
             if readable:
-                print(pprint_toc(toc), file=out)
+                print(pprint_toc(toc))
             else:
-                print(dump_toc(toc, vpos), end="", file=out)
+                print(dump_toc(toc, vpos), end="")
 
     except ValueError as e:
         if debug:
