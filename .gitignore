@@ -8,3 +8,8 @@ wheels/
 
 # Virtual environments
 .venv
+
+#  used for dev testing
+*.pdf
+recipe.toml
+data.toc

@@ -83,7 +83,6 @@ def gen(
 @click.option("--print-toc", "print_toc", is_flag=True, flag_value=False)
 @click.option("--debug", "debug", is_flag=True, flag_value=False)
 @click.option("--vpos", "vpos", is_flag=True, flag_value=False)
-@click.option()
 def io(path_in, toc_file, out, readable, print_toc, debug, vpos):
     """
     Read the data.toc file and write table of contents to a pdf
@@ -142,16 +141,14 @@ def io(path_in, toc_file, out, readable, print_toc, debug, vpos):
 
 @click.command()
 @click.argument("path_in", required=True)
-@click.argument("page", required=True)
+@click.argument("page", required=True, type=int)
 @click.argument("pattern", required=True)
+@click.option("--level", "level", type=int, default=1)
 @click.option("--ignore-case", "ignore_case", is_flag=True, flag_value=False)
-@click.option("--auto-level", "auto_level", type=int, default=None)
-def meta(path_in, page, pattern, ignore_case, auto_level):
+def meta(path_in, page, pattern, level, ignore_case):
     """
     Extract metadata from a PDF and write them to a recipe.toml file
     """
-
-    out: TextIO = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="ignore")
 
     with open_pdf(path_in) as doc:
         meta = extract_meta(doc, pattern, page, ignore_case)
@@ -160,13 +157,7 @@ def meta(path_in, page, pattern, ignore_case, auto_level):
         if len(meta) == 0:
             sys.exit(1)
 
-        # should we add \n between each output?
-        addnl = not out.isatty()
-
-        if auto_level:
-            print("\n".join([dump_toml(m, auto_level, addnl) for m in meta]), file=out)
-        else:
-            print("\n".join(map(print_meta, meta)), file=out)
+        print("\n".join([dump_toml(m, level) for m in meta]))
 
 
 main.add_command(gen)
