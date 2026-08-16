@@ -3,11 +3,11 @@ import sys
 import click
 import toml
 
-from tocgen.generate import gen_toc
-from tocgen.io import read_toc, write_toc
-from tocgen.meta import dump_toml, extract_meta
-from tocgen.parser import parse_toc
-from tocgen.utils import dump_toc, open_pdf, pprint_toc
+from toc.generate import gen_toc
+from toc.io import read_toc, write_toc
+from toc.meta import dump_toml, extract_meta
+from toc.parser import parse_toc
+from toc.utils import dump_toc, open_pdf, pprint_toc
 
 
 @click.group()
