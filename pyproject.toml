@@ -1,7 +1,7 @@
 [project]
-name = "tocgen"
+name = "toc"
 version = "0.1.0"
-description = "Add your description here"
+description = "Toc - a CLI utility to to edit the table of contents of your PDFs"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
