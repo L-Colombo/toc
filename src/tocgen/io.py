@@ -1,6 +1,6 @@
 from typing import List
 
-from mupdf import Document
+from pymupdf import Document
 
 from .utils import ToCEntry
 

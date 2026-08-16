@@ -3,7 +3,7 @@ import re
 from textwrap import indent
 from typing import List, Optional
 
-from mupdf import Document, Page
+from pymupdf import Document, Page
 from toml.encoder import _dump_float, _dump_str
 
 
