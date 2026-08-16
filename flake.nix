@@ -26,7 +26,6 @@
         ];
 
         buildInputs = with pkgs; [
-          libclang
           stdenv.cc.cc.lib
         ];
 
@@ -36,7 +35,6 @@
           uv pip install --editable .
         '';
 
-        LIBCLANG_PATH = with pkgs; "${libclang.lib}/lib";
         LD_LIBRARY_PATH = with pkgs; "${stdenv.cc.cc.lib}/lib";
       };
     };
