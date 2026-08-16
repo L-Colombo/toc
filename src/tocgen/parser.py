@@ -1,7 +1,8 @@
 import csv
 import sys
 from itertools import takewhile
-from typing import IO, List
+from pathlib import Path
+from typing import List
 
 from .utils import ToCEntry
 
@@ -31,9 +32,10 @@ def parse_entry(entry: List) -> ToCEntry:
         raise e
 
 
-def parse_toc(file: IO) -> List[ToCEntry]:
+def parse_toc(file: Path) -> List[ToCEntry]:
     """Parse a toc file to a list of toc entries"""
-    reader = csv.reader(
-        file, lineterminator="\n", delimiter=" ", quoting=csv.QUOTE_NONNUMERIC
-    )
-    return list(map(parse_entry, reader))
+    with open(file, "r") as f:
+        reader = csv.reader(
+            f, lineterminator="\n", delimiter=" ", quoting=csv.QUOTE_NONNUMERIC
+        )
+        return list(map(parse_entry, reader))
