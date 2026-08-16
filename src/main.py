@@ -1,13 +1,11 @@
-import os
 import sys
-from typing import TextIO
 
 import click
 import toml
 
 from tocgen.generate import gen_toc
 from tocgen.io import read_toc, write_toc
-from tocgen.meta import dump_toml, extract_meta, print_meta
+from tocgen.meta import dump_toml, extract_meta
 from tocgen.parser import parse_toc
 from tocgen.utils import dump_toc, open_pdf, pprint_toc
 
@@ -85,34 +83,21 @@ def io(path_in, toc_file, out, readable, print_toc, debug, vpos):
     """
     Read the data.toc file and write table of contents to a pdf
     """
+
     try:
         with open_pdf(path_in) as doc:
-            if toc_file.isatty() or print_toc:
-                # no input from user, switch to output mode and extract the toc
-                # of pdf
+            if print_toc:
                 toc = read_toc(doc)
-                if len(toc) == 0:
-                    print("error: no table of contents found", file=sys.stderr)
-                    sys.exit(1)
-
-                stdout = io.TextIOWrapper(
-                    sys.stdout.buffer, encoding="utf-8", errors="ignore"
-                )
 
                 if readable:
-                    print(pprint_toc(toc), file=stdout)
+                    print(pprint_toc(toc))
                 else:
-                    print(dump_toc(toc, vpos), end="", file=stdout)
+                    print(dump_toc(toc, vpos), end="")
                 sys.exit(0)
 
-            # an input is given, so switch to input mode
             toc = parse_toc(toc_file)
             write_toc(doc, toc)
 
-            if out is None:
-                # add suffix to input name as output
-                pfx, ext = os.path.splitext(path_in)
-                out = f"{pfx}_out{ext}"
             doc.save(out)
     except ValueError as e:
         if debug:
