@@ -67,7 +67,7 @@ wheels = [
 ]
 
 [[package]]
-name = "tocgen"
+name = "toc"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
