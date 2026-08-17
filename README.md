@@ -41,7 +41,7 @@ $ toc gen [OPTIONS] PATH_IN RECIPE_FILE
 
 `PATH_IN` is the PDF file for which the table of content is to be created.
 
-`RECIPE_FILE` is the `recipe.toml` file generate with the `meta` subcommand.
+`RECIPE_FILE` is the `recipe.toml` file generated with the `meta` subcommand.
 
 ### `io`
 
@@ -77,7 +77,7 @@ $ toc meta my-cool.pdf 7 "My cool first chapter"
 Unless the `--ignore-case` flag is passed, the search for `PATTERN` is case sensitive.
 
 It is assumed that the search matches a first-level entry.
-You can specify a different level passing `--level=X`, where x is a positive integer greater than one.
+You can specify a different level passing `--level=X`, where `X` is a positive integer greater than one.
 
 ## Auxiliary file format reference
 
@@ -89,7 +89,7 @@ This is a toml file which contains information about the fonts of sections to be
 
 ### `data.toc`
 
-This file is in a CSV value, where one blank space acts as the separator.
+This file is in a dialect of a CSV, where one blank space acts as the separator.
 
 Levels in the table of contents are expressed with indentation: no indentation means first level, one tab means second level, and so on.
 
