@@ -1,3 +1,4 @@
+# TODO: improve documentation and help messages
 import sys
 
 import click
@@ -140,6 +141,7 @@ def meta(path_in, page, pattern, level, ignore_case):
         if len(meta) == 0:
             sys.exit(1)
 
+        # TODO: make this append the output directly a file, unless specified otherwise
         print("\n".join([dump_toml(m, level) for m in meta]))
 
 

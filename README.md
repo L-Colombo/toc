@@ -12,10 +12,10 @@ Please, see below.
 # Usage
 
 ``` bash
-$ toc [SUBCOMMAND] <OPTIONS>
+$ toc [OPTIONS] COMMAND [ARGS]
 ```
 
-## Workflow
+# Workflow
 
 The general workflow is essentially that of `pdf.tocgen`.
 
@@ -33,19 +33,78 @@ Indentation is used to mark the level of entries.
 
 ### `gen`
 
-``` bash
-$ toc gen 
-```
-### `io`
+Generate a `data.toc` file from a `recipe.toml` file.
 
 ``` bash
-$ toc io
+$ toc gen [OPTIONS] PATH_IN RECIPE_FILE
 ```
+
+`PATH_IN` is the PDF file for which the table of content is to be created.
+
+`RECIPE_FILE` is the `recipe.toml` file generate with the `meta` subcommand.
+
+### `io`
+
+Write the table of contents specified in a `data.toc` file to the PDF.
+
+``` bash
+$ toc io [OPTIONS] PATH_IN TOC_FILE OUT
+```
+
+`PATH_IN` is the PDF file for which the table of content is to be created.
+
+`TOC_FILE` is the `data.toc` file, which contains the structure of the table of contents to be written.
+
+`OUT` is name of the PDF file to be produced, which is a copy of the original PDF file, with the added table of contents.
+Note that this command is non-destructive: the original PDF remains unchanged (useful in case there are problems or the end result is not what the user intended).
 
 ### `meta`
 
 ``` bash
-$ toc meta
+$ toc meta [OPTIONS] PATH_IN PAGE PATTERN
 ```
 
+`PATH_IN` is the PDF file to be scanned.
+
+`PAGE` is the page where `PATTERN` is to be searched.
+
+**EXAMPLE**: If I want get the metadata of font title of chapters in `my-cool.pdf` file, I can open the file, see that the first chapter is at, say, page 7 and is titled `my cool first chapter`, I will run
+
+``` bash
+$ toc meta my-cool.pdf 7 "My cool first chapter"
+```
+
+Unless the `--ignore-case` flag is passed, the search for `PATTERN` is case sensitive.
+
+It is assumed that the search matches a first-level entry.
+You can specify a different level passing `--level=X`, where x is a positive integer greater than one.
+
 ## Auxiliary file format reference
+
+### `recipe.toml`
+
+This is a toml file which contains information about the fonts of sections to be extracted in order to generate automatically the `data.toc` file.
+
+**IMPORTANT**: to avoid compatibility problems, it is advisable **NOT** to change this file manually.
+
+### `data.toc`
+
+This file is in a CSV value, where one blank space acts as the separator.
+
+Levels in the table of contents are expressed with indentation: no indentation means first level, one tab means second level, and so on.
+
+The first field (in double quotes) is the title of the table of contents entry, the table field is the page of the table of contents.
+**NB**: the page is the page **of the document**, not of the text.
+You should not merely translate the table of contents page of your book; you should also count the leading front matter, colophon, etc.
+
+Example:
+
+``` cvs
+"Cover page" 1
+"Table of Contents" 2
+"First Chapter" 7
+    "A subsesction of the first chapter" 12
+    "Another subsection of the first chapter" 15
+"Second Chapter" 22
+"Bibliography" 33
+```
