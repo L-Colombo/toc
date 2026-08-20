@@ -23,12 +23,10 @@ def main():
 @click.argument("path-in", required=True)
 @click.argument("recipe-file", required=True)
 @click.option("--readable", "readable", is_flag=True)
-@click.option("--debug", "debug", is_flag=True)
 @click.option("--vpos", "vpos", is_flag=True)
 def gen(
     path_in,
     recipe_file,
-    debug,
     readable,
     vpos,
 ):
@@ -47,16 +45,14 @@ def gen(
                 print(dump_toc(toc, vpos), end="")
 
     except ValueError as e:
-        if debug:
-            raise e
+        raise e
 
         print("error:", e, file=sys.stderr)
 
         sys.exit(1)
 
     except IOError as e:
-        if debug:
-            raise e
+        raise e
 
         print("error: unable to open file", file=sys.stderr)
         print(e, file=sys.stderr)
@@ -64,8 +60,7 @@ def gen(
         sys.exit(1)
 
     except KeyboardInterrupt as e:
-        if debug:
-            raise e
+        raise e
 
         print("error: interrupted", file=sys.stderr)
 
