@@ -22,9 +22,9 @@ def main():
 @click.command()
 @click.argument("path-in", required=True)
 @click.argument("recipe-file", required=True)
-@click.option("--readable", "readable", is_flag=True, flag_value=False)
-@click.option("--debug", "debug", is_flag=True, flag_value=False)
-@click.option("--vpos", "vpos", is_flag=True, flag_value=False)
+@click.option("--readable", "readable", is_flag=True)
+@click.option("--debug", "debug", is_flag=True)
+@click.option("--vpos", "vpos", is_flag=True)
 def gen(
     path_in,
     recipe_file,
@@ -76,10 +76,10 @@ def gen(
 @click.argument("path_in", required=True)
 @click.argument("toc_file", required=True)
 @click.argument("out", required=True)
-@click.option("--readable", "readable", is_flag=True, flag_value=False)
-@click.option("--print-toc", "print_toc", is_flag=True, flag_value=False)
-@click.option("--debug", "debug", is_flag=True, flag_value=False)
-@click.option("--vpos", "vpos", is_flag=True, flag_value=False)
+@click.option("--readable", "readable", is_flag=True)
+@click.option("--print-toc", "print_toc", is_flag=True)
+@click.option("--debug", "debug", is_flag=True)
+@click.option("--vpos", "vpos", is_flag=True)
 def io(path_in, toc_file, out, readable, print_toc, debug, vpos):
     """
     Read the data.toc file and write table of contents to a pdf
@@ -127,9 +127,10 @@ def io(path_in, toc_file, out, readable, print_toc, debug, vpos):
 @click.argument("path_in", required=True)
 @click.argument("page", required=True, type=int)
 @click.argument("pattern", required=True)
+@click.option("--ignore-case", "ignore_case", is_flag=True)
 @click.option("--level", "level", type=int, default=1)
-@click.option("--ignore-case", "ignore_case", is_flag=True, flag_value=False)
-def meta(path_in, page, pattern, level, ignore_case):
+@click.option("--no-file", is_flag=True)
+def meta(path_in, page, pattern, level, ignore_case, no_file):
     """
     Extract metadata from a PDF and write them to a recipe.toml file
     """
