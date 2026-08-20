@@ -145,6 +145,6 @@ def dump_toml(spn: dict, level: int, trail_nl: bool = False) -> str:
     return "\n".join(result)
 
 
-def print_meta(meta: dict) -> str:
-    """pretty print results in a structured manner"""
-    return f"{meta.get('text', '')}:\n{indent(dump_meta(meta), '    ')}"
+# def print_meta(meta: dict) -> str:
+#     """pretty print results in a structured manner"""
+#     return f"{meta.get('text', '')}:\n{indent(dump_meta(meta), '    ')}"
