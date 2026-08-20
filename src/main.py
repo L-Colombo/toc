@@ -42,7 +42,8 @@ def gen(
             if readable:
                 print(pprint_toc(toc))
             else:
-                print(dump_toc(toc, vpos), end="")
+                with open("data.toc", "w") as data:
+                    data.write(dump_toc(toc, vpos))
 
     except ValueError as e:
         raise e
