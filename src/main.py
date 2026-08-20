@@ -129,8 +129,8 @@ def io(path_in, toc_file, out, readable, print_toc, debug, vpos):
 @click.argument("pattern", required=True)
 @click.option("--ignore-case", "ignore_case", is_flag=True)
 @click.option("--level", "level", type=int, default=1)
-@click.option("--no-file", is_flag=True)
-def meta(path_in, page, pattern, level, ignore_case, no_file):
+@click.option("--no-recipe", is_flag=True)
+def meta(path_in, page, pattern, level, ignore_case, no_recipe):
     """
     Extract metadata from a PDF and write them to a recipe.toml file
     """
@@ -142,8 +142,13 @@ def meta(path_in, page, pattern, level, ignore_case, no_file):
         if len(meta) == 0:
             sys.exit(1)
 
-        # TODO: make this append the output directly a file, unless specified otherwise
-        print("\n".join([dump_toml(m, level) for m in meta]))
+        if no_recipe:
+            print("\n".join([dump_toml(m, level) for m in meta]))
+        else:
+            with open("recipe.toml", "a") as recipe:
+                recipe.write("\n".join([dump_toml(m, level) for m in meta]))
+                # this is for padding in case of multiple runs
+                recipe.write("\n")
 
 
 main.add_command(gen)
