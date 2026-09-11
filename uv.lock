@@ -79,10 +79,10 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "chardet", specifier = ">=7.5.1" },
-    { name = "click", specifier = ">=8.4.2" },
-    { name = "pymupdf", specifier = ">=1.28.2" },
-    { name = "toml", specifier = ">=0.10.2" },
+    { name = "chardet" },
+    { name = "click" },
+    { name = "pymupdf" },
+    { name = "toml" },
 ]
 
 [[package]]
