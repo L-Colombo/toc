@@ -5,9 +5,9 @@ description = "Toc - a CLI utility to to edit the table of contents of your PDFs
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
-  "chardet",
-  "click",
-  "pymupdf",
+  "chardet>=5.2.0",
+  "click>=8.3.1",
+  "pymupdf>=1.27",
   "toml",
 ]
 
