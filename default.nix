@@ -35,6 +35,8 @@ python3Packages.buildPythonApplication (finalAttrs: {
 
   passthru.updateScript = nix-update-script { };
 
+  pythonRelaxDeps = true;
+
   meta = {
     description = "";
     homepage = "https://github.com/L-Colombo/toc";
